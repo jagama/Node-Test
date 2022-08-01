@@ -1,0 +1,36 @@
+
+//API
+
+POST /api/auth/signup       create my user
+POST /api/auth/signin       log in my user
+
+GET  /api/test/all          get all public data
+GET  /api/test/user         get my selected user
+GET  /api/test/admin        get my admin user
+GET  /api/test/editor       get my editor user
+
+//MY TREE CONFIGURATION FOLDERS
+
+// app
+
+    //routes
+        auth.routes:  POST to register & login
+        user.routes:  GET public || private data
+
+    //middleware
+        verifySignup:  Check username & password
+        authJwt:       Check Token + check user-db-roles
+
+    //controllers
+        auth.controller:  handle register & login
+        user.controller:  handle public || protected data
+
+
+
+    //models
+        user.model:  my users model
+        role.model:  roles of my users
+
+    //config
+        configDB + SQLize
+        AuthKey
