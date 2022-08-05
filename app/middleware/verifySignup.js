@@ -1,59 +1,57 @@
-// verify my user name + mail + role
+const db = require("../models");
+const ROLES = db.ROLES;
+const User = db.user;
 
-const db = require('../models')
-const ROLES = db.ROLES
-const User = db.user
-
-// check if user exist
-checkUserNameAndMail = (req, res, next) => {
-    //username
+checkDuplicateUsernameOrEmail = (req, res, next) => {
+    // Username
     User.findOne({
-        where:{
-            username:req.body.username
+        where: {
+            username: req.body.username
         }
     }).then(user => {
-        if(user){
+        if (user) {
             res.status(400).send({
-                msg:'user already exist'
-            })
-            return
+                message: "Failed! Username is already in use!"
+            });
+            return;
         }
-    })
 
-    //mail
-    User.findOne({
-        where:{
-            email:req.body.email
-        }
-    }).then(mail => {
-        if(mail){
-            res.status(400).send({
-                msg:'mail already exists'
-            })
-            return
-        }
-    })
-
-    next()
-}
-
-// check if role is ok
-checkIfRoleExists = (req, res, next) => {
-    if(req.body.roles){
-        for(const element of req.body.roles) {
-            if (!ROLES.includes(element)){
+        // Email
+        User.findOne({
+            where: {
+                email: req.body.email
+            }
+        }).then(user => {
+            if (user) {
                 res.status(400).send({
-                    msg:'roles does not exists'
-                })
+                    message: "Failed! Email is already in use!"
+                });
+                return;
+            }
+
+            next();
+        });
+    });
+};
+
+checkRolesExisted = (req, res, next) => {
+    if (req.body.roles) {
+        for (const element of req.body.roles) {
+            if (!ROLES.includes(element)) {
+                res.status(400).send({
+                    message: "Failed! Role does not exist = " + element
+                });
+                return;
             }
         }
     }
-    next()
-}
+
+    next();
+};
 
 const verifySignUp = {
-    checkUsernameAndEmail : checkUserNameAndMail,
-    checkIfRoleExists : checkIfRoleExists
-}
+    checkDuplicateUsernameOrEmail: checkDuplicateUsernameOrEmail,
+    checkRolesExisted: checkRolesExisted
+};
 
-module.exports = verifySignUp
+module.exports = verifySignUp;

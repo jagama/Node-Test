@@ -19,6 +19,10 @@ app.get('/', (req, res) => {
     res.json({msg:'all ok '})
 })
 
+//routes
+require('./app/routes/auth.routes')(app)
+require('./app/routes/user.routes')(app)
+
 //set port & listen
 
 const PORT = process.env.PORT || 8080
@@ -39,7 +43,7 @@ function init(){
 
     Role.create({
         id:2,
-        name:'editor'
+        name:'moderator'
     });
     Role.create({
         id:3,
@@ -48,11 +52,11 @@ function init(){
 }
 
 
-// db.sequelize.sync()
-// .then(() => {
-//     console.log('up')
-//     init()
-// })
+db.sequelize.sync()
+.then(() => {
+    console.log('up')
+    init()
+})
 
 
 

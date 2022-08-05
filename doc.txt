@@ -7,7 +7,7 @@ POST /api/auth/signin       log in my user
 GET  /api/test/all          get all public data
 GET  /api/test/user         get my selected user
 GET  /api/test/admin        get my admin user
-GET  /api/test/editor       get my editor user
+GET  /api/test/moderator       get my editor user
 
 //MY TREE CONFIGURATION FOLDERS
 
